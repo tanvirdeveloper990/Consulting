@@ -10,14 +10,14 @@
                 <div class="card shadow-lg rounded-3">
                     <div class="card-header d-flex justify-content-between">
                         <h5 class="mb-0">Update My Choose Us</h5>
-                        <a href="{{ route('admin.my-choose.index') }}" class="btn btn-success btn-sm">
+                        <a href="{{ route('admin.service.index') }}" class="btn btn-success btn-sm">
                             <i class="fa fa-angle-left me-1"></i> Back
                         </a>
                     </div>
 
                     <div class="card-body">
                         <form method="POST"
-                              action="{{ route('admin.my-choose.update', $data->id) }}" enctype="multipart/form-data">
+                              action="{{ route('admin.service.update', $data->id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 

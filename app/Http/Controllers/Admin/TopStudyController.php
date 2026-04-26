@@ -49,7 +49,7 @@ class TopStudyController extends Controller
             $data['image'] = $image;
         }
         TopStudy::create($data);
-        return redirect()->route('admin.top-study.index')->with('success', 'Data Store Successfully');
+        return redirect()->route('admin.stories-satisfaction.index')->with('success', 'Data Store Successfully');
     }
 
     /**
@@ -89,7 +89,7 @@ class TopStudyController extends Controller
             $input['image'] = $image;
         }
         $data->update($input);
-        return redirect()->route('admin.top-study.index')->with('success', 'Data Update Successfully');
+        return redirect()->route('admin.stories-satisfaction.index')->with('success', 'Data Update Successfully');
 
     }
 

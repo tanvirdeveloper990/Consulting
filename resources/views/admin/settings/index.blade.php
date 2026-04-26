@@ -189,7 +189,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label fw-semibold">Ready to Study Abroad Image</label>
+                            <label class="form-label fw-semibold">Services Section Image</label>
                             <input type="file" name="study_image" class="form-control p-1" id="study_image">
                             <div class="mt-2">
                             @if($data->study_image)

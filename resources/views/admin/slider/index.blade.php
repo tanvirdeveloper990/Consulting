@@ -22,7 +22,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>#</th>
-                                        <th>Title</th>
+                                        <th>Badge Text</th>
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Actions</th>

@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title','Add My Choose US')
+@section('title','Add Services')
 
 @section('content')
 
@@ -10,13 +10,13 @@
             <div class="col-12 mx-auto">
                 <div class="card shadow-lg rounded-3">
                     <div class="card-header d-flex justify-content-between">
-                        <h5 class="mb-0">Add My Choose US</h5>
-                        <a href="{{ route('admin.my-choose.index') }}" class="btn btn-success btn-sm float-end">
+                        <h5 class="mb-0">Add Services</h5>
+                        <a href="{{ route('admin.service.index') }}" class="btn btn-success btn-sm float-end">
                             <i class="fa fa-angle-left me-1"></i> Back
                         </a>
                     </div>
                     <div class="card-body">
-                        <form id="form" method="POST" action="{{route('admin.my-choose.store') }}" enctype="multipart/form-data">
+                        <form id="form" method="POST" action="{{route('admin.service.store') }}" enctype="multipart/form-data">
                             @csrf
                             @method('POST')
 

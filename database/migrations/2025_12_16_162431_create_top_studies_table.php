@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('top_studies', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->string('name')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('title_1')->nullable();
+            $table->string('title_2')->nullable();
+            $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();

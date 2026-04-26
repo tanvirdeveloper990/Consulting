@@ -21,21 +21,30 @@
                             @method('POST')
 
                             <div class="row g-3">
-                                <div class="col-md-12">
-                                    <label for="title" class="form-label">Title</label>
+
+                                <div class="col-md-6">
+                                    <label for="description" class="form-label">Title One</label>
+                                    <input type="text" class="form-control" id="description" name="description"
+                                        value="{{ old('title') }}" placeholder="Enter Slider Title One" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="description_2" class="form-label">Title Two</label>
+                                    <input type="text" class="form-control" id="description_2" name="description_2"
+                                        value="{{ old('description_2') }}" placeholder="Enter Slider Title Two" required>
+                                </div>
+
+                                 <div class="col-md-4">
+                                    <label for="title" class="form-label">Badge Text</label>
                                     <input type="text" class="form-control" id="title" name="title"
-                                        value="{{ old('title') }}" placeholder="Enter Slider Title" required>
+                                        value="{{ old('title') }}" placeholder="Enter Slider Badge">
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label for="description" class="form-label">Description One</label>
-                                    <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+                                <div class="col-md-8">
+                                    <label for="text" class="form-label">Description</label>
+                                    <textarea class="form-control" id="text" name="text" rows="2" placeholder="write something here..."></textarea>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="description_2" class="form-label">Description Two</label>
-                                    <textarea class="form-control" id="description_2" name="description_2" rows="2"></textarea>
-                                </div>
-
+                
                                 <div class="col-md-6">
                                     <label for="image" class="form-label">Image</label>
                                     <input type="file" class="form-control" id="image" name="image" value="{{ old('image') }}">

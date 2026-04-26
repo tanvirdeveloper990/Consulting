@@ -50,7 +50,7 @@ class MyChooseController extends Controller
         }
     
         MyChoose::create($data);
-        return redirect()->route('admin.my-choose.index')->with('success', 'Data Store Successfully');
+        return redirect()->route('admin.service.index')->with('success', 'Data Store Successfully');
     }
 
     /**
@@ -92,7 +92,7 @@ class MyChooseController extends Controller
         }
 
         $data->update($input);
-        return redirect()->route('admin.my-choose.index')->with('success', 'Data Update Successfully');
+        return redirect()->route('admin.service.index')->with('success', 'Data Update Successfully');
 
     }
 

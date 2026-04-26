@@ -47,40 +47,40 @@
             </li>
             @endcanany
 
-            @canany(['create we-are','edit we-are','view we-are','delete we-are'])
-            <li class="{{ request()->routeIs('admin.advanced-study.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.advanced-study.index') }}" class="nva-link ms-4">
-                    <i class="fa-solid fa-graduation-cap me-2"></i> We Are
-                </a>
-            </li>
+           @canany(['create we-are','edit we-are','view we-are','delete we-are'])
+                <li class="{{ request()->routeIs('admin.advanced-study.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.advanced-study.index') }}" class="nva-link ms-4">
+                        <i class="fa-solid fa-circle-info me-2"></i> About Us
+                    </a>
+                </li>
             @endcanany
 
 
-            @canany(['create student-support','edit student-support','view student-support','delete student-support'])
-            <li class="{{ request()->routeIs('admin.student_support.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.student_support.index') }}" class="nva-link ms-4">
-                    <i class="fa-solid fa-user-graduate me-2"></i> Student Support
+           @canany(['create student-support','edit student-support','view student-support','delete student-support'])
+            <li class="{{ request()->routeIs('admin.journey-steps.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.journey-steps.index') }}" class="nva-link ms-4">
+                    <i class="fa-solid fa-list-check me-2"></i> Journey Steps
                 </a>
             </li>
             @endcanany
 
             @canany(['create mychoose-us','edit mychoose-us','view mychoose-us','delete mychoose-us'])
-            <li class="{{ request()->routeIs('admin.my-choose.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.my-choose.index') }}" class="nva-link ms-4">
-                    <i class="fa-solid fa-circle-check me-2"></i> Why Choose Us
+            <li class="{{ request()->routeIs('admin.service.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.service.index') }}" class="nva-link ms-4">
+                    <i class="fa-solid fa-handshake-angle me-2"></i> Services
                 </a>
             </li>
             @endcanany
 
             @canany(['create top-study','edit top-study','view top-study','delete top-study'])
-            <li class="{{ request()->routeIs('admin.top-study.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.top-study.index') }}" class="nva-link ms-4">
-                    <i class="fa-solid fa-award me-2"></i> Top Study
+            <li class="{{ request()->routeIs('admin.stories-satisfaction.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.stories-satisfaction.index') }}" class="nva-link ms-4">
+                    <i class="fa-solid fa-comments me-2"></i> Satisfaction Stories
                 </a>
             </li>
             @endcanany
 
-            @canany(['create frequently','edit frequently','view frequently','delete frequently'])
+            {{--@canany(['create frequently','edit frequently','view frequently','delete frequently'])
             <li class="{{ request()->routeIs('admin.frequently-asked.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.frequently-asked.index') }}" class="nva-link ms-4">
                     <i class="fa-solid fa-question-circle me-2"></i> FAQ
@@ -96,13 +96,22 @@
             </li>
             @endcanany
 
+            
+            @canany(['create review','edit review','view review','delete review'])
+            <li class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.reviews.index') }}" class="nva-link ms-4">
+                    <i class="fa-solid fa-star me-2"></i> Reviews
+                </a>
+            </li>
+            @endcanany
+
             @canany(['create university-admission','edit university-admission','view university-admission','delete university-admission'])
             <li class="{{ request()->routeIs('admin.university-admission.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.university-admission.index') }}" class="nva-link ms-4">
                     <i class="fa-solid fa-graduation-cap me-2"></i> Our Service
                 </a>
             </li>
-            @endcanany
+            @endcanany--}}
 
 
             @canany(['create our-partner','edit our-partner','view our-partner','delete our-partner'])
@@ -113,13 +122,6 @@
             </li>
             @endcanany
 
-            @canany(['create review','edit review','view review','delete review'])
-            <li class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.reviews.index') }}" class="nva-link ms-4">
-                    <i class="fa-solid fa-star me-2"></i> Reviews
-                </a>
-            </li>
-            @endcanany
 
             @canany(['create setting','edit setting','view setting','delete setting'])
             <li class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">

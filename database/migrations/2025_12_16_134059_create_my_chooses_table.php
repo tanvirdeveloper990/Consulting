@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('my_chooses', function (Blueprint $table) {
             $table->id();
-            $table->string('count')->nullable();
             $table->string('title')->nullable();
             $table->string('icon')->nullable();
             $table->text('description')->nullable();

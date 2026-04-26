@@ -1,6 +1,6 @@
   <!-- Footer -->
  <!-- Modern Footer -->
-<footer class="bg-gradient-to-br from-secondary via-gray-800 to-secondary text-white">
+{{--<footer class="bg-gradient-to-br from-secondary via-gray-800 to-secondary text-white">
   <!-- Main Footer Content -->
   <div class="container mx-auto px-4 md:px-6 lg:px-12 pt-16">
     
@@ -180,10 +180,10 @@
       </div>
     </div>
   </div>
-</footer>
+</footer>--}}
 
   <!-- Floating Action Buttons Container -->
-  <div class="fixed bottom-0 left-0 right-0 pointer-events-none z-50">
+  {{--<div class="fixed bottom-0 left-0 right-0 pointer-events-none z-50">
     <!-- WhatsApp Button - Left Bottom -->
     @php
     $whatsappNumber = preg_replace('/[^0-9]/', '', $setting->phone_one);
@@ -251,4 +251,4 @@
   </div>
 
   <!-- Facebook SDK -->
-  <div id="fb-root"></div>
+  <div id="fb-root"></div>--}}

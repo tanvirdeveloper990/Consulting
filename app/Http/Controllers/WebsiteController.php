@@ -29,6 +29,7 @@ use App\Models\TopStudy;
 use App\Models\UniversityAdmission;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class WebsiteController extends Controller
 {
@@ -39,8 +40,12 @@ class WebsiteController extends Controller
         $advanced = AdvancedStudy::first();
         $student = StudentSupport::first();
         $overview = ProjectOverview::first();
-        $mychoose = MyChoose::where('status',1)->get();
-        $topstudy = TopStudy::where('status',1)->get();
+        $steps = StudentSupport::where('status',1)->get();
+        $services = MyChoose::where('status', 1)->orderBy('id', 'asc')->get();
+        $stories = TopStudy::where('status',1)->orderBy('id', 'asc')->get()->map(function($s) {
+            $s->image_url = $s->image ? Storage::url($s->image) : '';
+            return $s;
+        })->values();
         $toprated = TopRated::where('status',1)->get();
         $partners = OurParents::where('status',1)->get();
         $frequently = FrequentlyAsked::where('status',1)->get();
@@ -53,7 +58,15 @@ class WebsiteController extends Controller
         $notice = Notice::where('status',1)->latest()->get();
 
 
-        return view('frontend.index', compact('galleries','country','blogs','setting','slider','advanced','student','overview','mychoose','topstudy','toprated','partners','frequently','photoreview','videoreview','certificates','notice'));
+        return view('frontend.index', compact('galleries','steps','country','blogs','setting','slider','advanced','student','overview','services','stories','toprated','partners','frequently','photoreview','videoreview','certificates','notice'));
+    }
+
+    public function allservices()
+    {
+        $setting = Setting::first();
+        $overview = ProjectOverview::first();
+        $services = MyChoose::where('status', 1)->orderBy('id', 'asc')->get();
+        return view('frontend.services', compact('setting','overview','services'));
     }
 
     public function singleBlog($slug)
@@ -86,7 +99,7 @@ class WebsiteController extends Controller
         return view('frontend.service-support', compact('setting','overview','student','support'));
     }
 
-    public function whoweare()
+    public function abouts()
     {
         $setting = Setting::first();
         $overview = ProjectOverview::first();

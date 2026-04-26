@@ -4,204 +4,214 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login</title>
+    <title>Admin Login | Consulting Portal</title>
 
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
         * {
-            font-family: "Inter", sans-serif;
+            font-family: "Plus Jakarta Sans", sans-serif;
         }
 
         body {
             height: 100vh;
-            background: #0e0e0e;
-            overflow: hidden;
-            position: relative;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Consulting Professional Gradient */
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0369a1, #0c4a6e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Rain Effect */
-        .rain {
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Abstract Circles for depth */
+        .shape {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
             z-index: 0;
         }
 
-        .drop {
-            position: absolute;
-            width: 2px;
-            bottom: 100%;
-            background: rgba(255, 255, 255, 0.35);
-            border-radius: 50%;
-            animation: fall linear infinite;
-        }
+        .shape-1 { width: 300px; height: 300px; top: -100px; right: -50px; }
+        .shape-2 { width: 200px; height: 200px; bottom: -50px; left: -30px; }
 
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* Login Card */
+        /* Modern Glassmorphism Card */
         .login-card {
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 420px;
-            padding: 35px 30px;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .login-title {
-            color: #fff;
-            font-size: 28px;
+            color: #ffffff;
+            font-size: 26px;
             font-weight: 700;
-            text-align: center;
+            letter-spacing: -0.5px;
         }
 
         .login-subtitle {
-            color: #d1d5db;
-            text-align: center;
-            margin-bottom: 25px;
+            color: #94a3b8;
+            font-size: 14px;
         }
 
-        .form-control {
-            background: rgba(255, 255, 255, 0.15) !important;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #fff !important;
+        /* Form Styling */
+        .form-label {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
         }
 
-        .form-control::placeholder {
-            color: #d1d1d1 !important;
+        .input-group {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .input-group:focus-within {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
         }
 
         .input-group-text {
-            background: rgba(255, 255, 255, 0.10);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #fff;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding-left: 15px;
         }
 
-        .btn-login {
-            background: #00d4ff;
+        .form-control {
+            background: transparent !important;
             border: none;
-            padding: 10px 0;
-            font-weight: 600;
-            font-size: 16px;
-            border-radius: 8px;
+            color: #fff !important;
+            padding: 12px 15px;
+            font-size: 15px;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+        .form-control::placeholder {
+            color: #64748b !important;
+        }
+
+        /* Login Button */
+        .btn-login {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px;
+            font-weight: 700;
+            border-radius: 12px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
         }
 
         .btn-login:hover {
-            background: #0ea5e9;
+            background: #7dd3fc;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px -5px rgba(56, 189, 248, 0.4);
         }
 
         .remember-text {
-            color: #d1d5db;
+            color: #94a3b8;
+            font-size: 13px;
         }
 
-        .text-danger {
-            font-size: 14px;
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-check-input:checked {
+            background-color: #38bdf8;
+            border-color: #38bdf8;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Rain Background -->
-    <div class="rain" id="rain"></div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
 
-    <!-- Login Box -->
     <div class="login-card">
-
-        <h2 class="login-title">Login Here</h2>
-        <p class="login-subtitle">Sign in to continue</p>
+        <div class="login-header">
+            <h2 class="login-title">Admin Portal</h2>
+            <p class="login-subtitle">Consulting Management System</p>
+        </div>
 
         <form action="{{ route('admin.login') }}" method="POST">
             @csrf
 
-            <!-- Email -->
-            <div class="input-group mb-3">
-                <span class="input-group-text">
-                    <i class="fa-solid fa-envelope"></i>
-                </span>
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                    placeholder="Email">
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+                    <input type="email" name="email" class="form-control" placeholder="admin@consulting.com" required>
+                </div>
+                @error('email')
+                <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                @enderror
             </div>
-            @error('email')
-            <span class="text-danger">{{ $message }}</span>
-            @enderror
 
-            <!-- Password -->
-            <div class="input-group mb-3">
-                <span class="input-group-text">
-                    <i class="fa-solid fa-lock"></i>
-                </span>
-                <input type="password" id="password" name="password"
-                    class="form-control @error('password') is-invalid @enderror" placeholder="Password">
-
-                <span class="input-group-text" style="cursor:pointer" onclick="togglePassword()">
-                    <i id="eyeIcon" class="fa-solid fa-eye"></i>
-
-                </span>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <span class="input-group-text" style="cursor:pointer" onclick="togglePassword()">
+                        <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                    </span>
+                </div>
+                @error('password')
+                <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                @enderror
             </div>
-            @error('password')
-            <span class="text-danger">{{ $message }}</span>
-            @enderror
 
-            <!-- Remember -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="form-check">
-                    <input type="checkbox" id="remember" name="remember" class="form-check-input"
-                        {{ old('remember') ? 'checked' : '' }}>
-                    <label for="remember" class="remember-text">Remember Me</label>
+                    <input type="checkbox" id="remember" name="remember" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
+                    <label for="remember" class="remember-text">Keep me logged in</label>
                 </div>
             </div>
 
-            <!-- Submit -->
-            <button type="submit" class="btn btn-login w-100">Sign In</button>
-
+            <button type="submit" class="btn btn-login w-100">Access Dashboard</button>
         </form>
-
     </div>
 
-    <!-- Rain Script -->
-    <script>
-        const rain = document.getElementById("rain");
-
-        function createDrop() {
-            const drop = document.createElement("div");
-            drop.classList.add("drop");
-            drop.style.left = `${Math.random() * window.innerWidth}px`;
-            drop.style.animationDuration = `${0.4 + Math.random() * 0.6}s`;
-            drop.style.opacity = 0.2 + Math.random() * 0.5;
-            drop.style.height = `${15 + Math.random() * 25}px`;
-            rain.appendChild(drop);
-
-            setTimeout(() => drop.remove(), 1500);
-        }
-
-        setInterval(() => {
-            for (let i = 0; i < 4; i++) createDrop();
-        }, 60);
-    </script>
-
-    <!-- Password Toggle -->
     <script>
         function togglePassword() {
             const pass = document.getElementById("password");

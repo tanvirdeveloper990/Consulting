@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title',' My Choose US List')
+@section('title',' Services List')
 
 @section('content')
 
@@ -11,8 +11,8 @@
             <div class="col-12">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"> My Choose US List</h5>
-                        <a href="{{ route('admin.my-choose.create') }}" class="btn btn-success btn-sm">
+                        <h5 class="mb-0"> Services List</h5>
+                        <a href="{{ route('admin.service.create') }}" class="btn btn-success btn-sm">
                             <i class="fa fa-plus me-1"></i> Add
                         </a>
                     </div>
@@ -50,15 +50,15 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1">
-                                                <a href="{{ route('admin.my-choose.edit',$item->id) }}" class="btn btn-sm btn-info">
+                                                <a href="{{ route('admin.service.edit',$item->id) }}" class="btn btn-sm btn-info">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.my-choose.edit',$item->id) }}" class="btn btn-sm btn-warning">
+                                                <a href="{{ route('admin.service.edit',$item->id) }}" class="btn btn-sm btn-warning">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </a>
 
-                                                <form id="delete-form-{{$item->id }}" action="{{ route('admin.my-choose.destroy',$item->id) }}" method="POST" class="d-none">
+                                                <form id="delete-form-{{$item->id }}" action="{{ route('admin.service.destroy',$item->id) }}" method="POST" class="d-none">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>

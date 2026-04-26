@@ -53,12 +53,13 @@ Route::get('/cmd', function () {
 
 
 Route::get('/', [WebsiteController::class, 'home'])->name('index');
+Route::get('all-services', [WebsiteController::class, 'allservices'])->name('all-services');
 
 Route::get('study-destination/{id}', [WebsiteController::class, 'destination'])->name('study.destination');
 
 
 Route::get('service-and-support', [WebsiteController::class, 'services'])->name('service-support');
-Route::get('/who-we-are', [WebsiteController::class, 'whoweare'])->name('who-we-are');
+Route::get('/about-us', [WebsiteController::class, 'abouts'])->name('about-us');
 
 Route::get('/notice', [WebsiteController::class, 'notice'])->name('notice');
 
@@ -165,9 +166,9 @@ Route::prefix('admin')
         Route::resource('project-overview', ProjectOverviewController::class);
         Route::resource('sliders', SliderController::class);
         Route::resource('advanced-study', AdvancedStudyController::class);
-        Route::resource('student_support', StudentSupportController::class);
-        Route::resource('my-choose', MyChooseController::class);
-        Route::resource('top-study', TopStudyController::class);
+        Route::resource('journey-steps', StudentSupportController::class);
+        Route::resource('service', MyChooseController::class);
+        Route::resource('stories-satisfaction', TopStudyController::class);
         Route::resource('country', CountryController::class);
         Route::resource('top-university', TopRatedController::class);
         Route::resource('frequently-asked', FrequentlyAskedController::class);
@@ -194,4 +195,4 @@ Route::prefix('admin')
     });
 
 
-// php artisan migrate:refresh --path=database/migrations/2025_11_27_144538_create_blogs_table.php
+// php artisan migrate:refresh --path=database/migrations/2025_12_16_162431_create_top_studies_table.php
