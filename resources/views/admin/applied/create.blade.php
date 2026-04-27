@@ -81,14 +81,14 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label for="overall_score" class="form-label">Overall Score</label>
                                     <input type="text" class="form-control" id="overall_score" name="overall_score" value="{{ old('overall_score') }}" placeholder="Enter Overall Score">
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label for="score" class="form-label">Low Band Score</label>
                                     <input type="text" class="form-control" id="score" name="score" value="{{ old('score') }}" placeholder="Enter Overall Score">
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-6">
                                     <label for="status" class="form-label">Status</label>

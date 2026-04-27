@@ -36,7 +36,7 @@
         <div class="navbar-center" id="desktopNav">
           <a href="/" class="nav-link active">Home</a>
           <a href="{{route('about-us')}}" class="nav-link">About Us</a>
-          <a href="#" class="nav-link">Services</a>
+          <a href="{{route('all-services')}}" class="nav-link">Services</a>
           <a href="#" class="nav-link">Destination</a>
           <a href="#" class="nav-link">Testimonials</a>
           <a href="#" class="nav-link">Blogs & Events</a>

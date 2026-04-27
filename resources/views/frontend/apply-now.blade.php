@@ -1,333 +1,391 @@
 @extends('layouts.app')
-@section('title','Excellent | Apply')
+
+@section('title','Contact Us')
+
+@section('css')
+<style>
+.srv-banner {
+    width: 100%;
+    min-height: 180px;
+    background: linear-gradient(135deg, #0A474C 0%, #0d6b72 50%, #00B8D4 100%);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+.srv-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+}
+.srv-banner .container { position: relative; z-index: 1; text-align: center; }
+.srv-banner__title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -.02em;
+    text-align: center;
+}
+@media (min-width: 992px) {
+    .srv-banner { display: flex; }
+}
+
+/* Dropdown fix — max-height + scroll */
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+.custom-dropdown-menu li {
+    padding: 10px 18px;
+    cursor: pointer;
+    list-style: none;
+    font-size: .95rem;
+    color: #374151;
+    transition: background .15s;
+}
+.custom-dropdown-menu li:hover {
+    background: rgba(0, 184, 212, .1);
+    color: #0A474C;
+}
+
+/* Success toast */
+.success-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    background: #0A474C;
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: .95rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: toastIn .3s ease;
+}
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+.form-card,
+.form-card *,
+.row,
+.col-12,
+.col-lg-6 {
+    overflow: visible !important;
+}
+
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 9999 !important;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    max-height: 240px;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+.custom-dropdown-menu li {
+    padding: 11px 18px;
+    cursor: pointer;
+    list-style: none;
+    font-size: .95rem;
+    color: #374151;
+    border-bottom: 1px solid #f9fafb;
+}
+
+.custom-dropdown-menu li:last-child { border-bottom: none; }
+
+.custom-dropdown-menu li:hover {
+    background: rgba(0,184,212,.1);
+    color: #0A474C;
+}
+</style>
+@endsection
 
 @section('content')
 
-<main class="container mx-auto">
-<!-- Application Form Section -->
-<section class="py-16 px-4">
-  <div class="max-w-6xl mx-auto">
+    <!-- Success Toast -->
+    @if(session('success'))
+    <div class="success-toast" id="successToast">
+        <i class="fas fa-check-circle" style="color:#00B8D4;font-size:1.2rem;"></i>
+        {{ session('success') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            var t = document.getElementById('successToast');
+            if (t) t.style.display = 'none';
+        }, 4000);
+    </script>
+    @endif
 
-    <!-- Form Container -->
-    <div class="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
-      
-      <!-- Decorative Background Pattern -->
-      <div class="absolute top-0 right-0 w-64 h-64 bg-primary opacity-5 rounded-full -mr-32 -mt-32"></div>
-      <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary opacity-5 rounded-full -ml-48 -mb-48"></div>
-      
-      <!-- Form Content -->
-      <div class="relative z-10 p-6 md:p-12">
-        
-        <!-- Heading -->
-        <div class="text-center mb-12">
-          <div class="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-sm font-semibold mb-4">
-            {{ \App\Helpers\TranslateHelper::translate('Start Your Journey') }}
-          </div>
-          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {{ \App\Helpers\TranslateHelper::translate($overview->apply_title) }}
-          </h2>
-          <p class="text-gray-600 text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
-            {{ \App\Helpers\TranslateHelper::translate($overview->apply_description) }}
-          </p>
+    <!-- PAGE BANNER (desktop only) -->
+    <div class="srv-banner">
+        <div class="container">
+            <h1 class="srv-banner__title">Contact Us</h1>
         </div>
-
-        <!-- Form -->
-        <form class="space-y-6" action="{{ route('apply-store') }}" method="POST">
-          @csrf
-          
-          <!-- Full Name (Full Width) -->
-          <div class="relative group">
-            <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                <i class="fas fa-user text-primary text-lg"></i>
-              </div>
-              <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('Full Name') }}" name="name"
-                class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-            </div>
-          </div>
-
-          <!-- Phone and Email Row -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Phone Number -->
-            <div class="relative group">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-phone text-primary text-lg"></i>
-                </div>
-                <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('Phone Number') }}" name="phone"
-                  class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-              </div>
-            </div>
-
-            <!-- Email -->
-            <div class="relative group">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-envelope text-primary text-lg"></i>
-                </div>
-                <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('Email Address') }}" name="email"
-                  class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Last Education and GPA Row -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Last Education Qualification -->
-            <div class="relative group">
-              <input type="hidden" name="education" id="education_value">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 cursor-pointer focus-within:border-primary focus-within:shadow-md"
-                onclick="toggleDropdown('education-dropdown')">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-graduation-cap text-primary text-lg"></i>
-                </div>
-                <span class="w-full text-gray-400 outline-none font-medium" id="education-selected">{{ \App\Helpers\TranslateHelper::translate('Education Level') }}</span>
-                <i class="fas fa-chevron-down text-primary text-sm ml-2 transition-transform group-hover:translate-y-0.5"></i>
-              </div>
-              <!-- Dropdown Menu -->
-              <ul id="education-dropdown" class="hidden absolute z-10 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                <li onclick="selectValue('SSC')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('SSC') }}</li>
-                <li onclick="selectValue('HSC')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('HSC') }}</li>
-                <li onclick="selectValue('Diploma')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('Diploma') }}</li>
-                <li onclick="selectValue('Bachelor')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('Bachelor') }}</li>
-                <li onclick="selectValue('Masters')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('Masters') }}</li>
-                <li onclick="selectValue('PhD')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('PhD') }}</li>
-              </ul>
-            </div>
-
-            <!-- Type GPA/CGPA -->
-            <div class="relative group">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-chart-line text-primary text-lg"></i>
-                </div>
-                <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('GPA / CGPA') }}" name="type"
-                  class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Passing Year and Study Destination Row -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Type Passing Year -->
-            <div class="relative group">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-calendar-alt text-primary text-lg"></i>
-                </div>
-                <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('Passing Year') }}" name="type_passing_year"
-                  class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-              </div>
-            </div>
-
-            <!-- Preferred Study Destination with Search -->
-            <div class="relative group">
-              <input type="hidden" name="study_destination" id="destination_value">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 cursor-pointer focus-within:border-primary focus-within:shadow-md"
-                onclick="toggleDropdown('destination-dropdown')">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-globe text-primary text-lg"></i>
-                </div>
-                <span class="w-full text-gray-400 outline-none font-medium" id="destination-selected">{{ \App\Helpers\TranslateHelper::translate('Study Destination') }}</span>
-                <i class="fas fa-chevron-down text-primary text-sm ml-2 transition-transform group-hover:translate-y-0.5"></i>
-              </div>
-              
-              <!-- Dropdown Menu with Search -->
-              <div id="destination-dropdown" class="hidden absolute z-10 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                <!-- Search Input -->
-                <div class="p-3 border-b border-gray-100 sticky top-0 bg-white">
-                  <div class="flex items-center bg-gray-50 rounded-lg px-3 py-2">
-                    <i class="fas fa-search text-gray-400 text-sm mr-2"></i>
-                    <input 
-                      type="text" 
-                      id="country-search" 
-                      class="w-full bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400" 
-                      placeholder="{{ \App\Helpers\TranslateHelper::translate('Search country...') }}"
-                      onclick="event.stopPropagation()"
-                      oninput="filterCountries()"
-                    />
-                  </div>
-                </div>
-                
-                <!-- Country List -->
-                <ul id="country-list" class="max-h-64 overflow-y-auto">
-                  @foreach($country as $item)
-                    <li onclick="selectCountry('{{ $item->country }}')" 
-                        class="country-item px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors" 
-                        data-country="{{ strtolower($item->country) }}">
-                      {{ \App\Helpers\TranslateHelper::translate($item->country) }}
-                    </li>
-                  @endforeach
-                </ul>
-                
-                <!-- No Results Message -->
-                <div id="no-results" class="hidden px-6 py-4 text-center text-gray-500 text-sm">
-                  <i class="fas fa-search mb-2 text-2xl text-gray-300"></i>
-                  <p>{{ \App\Helpers\TranslateHelper::translate('No country found') }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- English Proficiency and Overall Score Row -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- English Proficiency -->
-            <div class="relative group">
-              <input type="hidden" name="english_proficiency" id="proficiency_value">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 cursor-pointer focus-within:border-primary focus-within:shadow-md"
-                onclick="toggleDropdown('proficiency-dropdown')">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-language text-primary text-lg"></i>
-                </div>
-                <span class="w-full text-gray-400 outline-none font-medium" id="proficiency-selected">{{ \App\Helpers\TranslateHelper::translate('English Proficiency') }}</span>
-                <i class="fas fa-chevron-down text-primary text-sm ml-2 transition-transform group-hover:translate-y-0.5"></i>
-              </div>
-              <!-- Dropdown Menu -->
-              <ul id="proficiency-dropdown" class="hidden absolute z-10 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                <li onclick="selectValue('IELTS')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('IELTS') }}</li>
-                <li onclick="selectValue('TOEFL')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('TOEFL') }}</li>
-                <li onclick="selectValue('PTE')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('PTE') }}</li>
-                <li onclick="selectValue('DUOLINGO')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('DUOLINGO') }}</li>
-                <li onclick="selectValue('None')" class="px-6 py-3 hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">{{ \App\Helpers\TranslateHelper::translate('None') }}</li>
-              </ul>
-            </div>
-
-            <!-- Overall Score -->
-            <div class="relative group">
-              <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <i class="fas fa-star text-primary text-lg"></i>
-                </div>
-                <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('Overall Score') }}" name="overall_score"
-                  class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Low Band Score (Full Width) -->
-          <div class="relative group">
-            <div class="flex items-center border-2 border-gray-200 bg-white rounded-xl px-4 py-4 shadow-sm hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-md">
-              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                <i class="fas fa-signal text-primary text-lg"></i>
-              </div>
-              <input type="text" placeholder="{{ \App\Helpers\TranslateHelper::translate('Low Band Score') }}" name="score"
-                class="w-full text-gray-800 outline-none font-medium bg-transparent placeholder-gray-400" />
-            </div>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="pt-6">
-            <button type="submit"
-              class="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-bold text-lg py-5 rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3">
-              <span>{{ \App\Helpers\TranslateHelper::translate('Submit Application') }}</span>
-              <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-            </button>
-          </div>
-        </form>
-
-      </div>
     </div>
 
-  </div>
-</section>
-</main>
+    <!-- Mobile Title -->
+    <div class="d-flex d-lg-none flex-wrap justify-content-center text-center mb-4 mt-5 p-2">
+        <h2 class="section-title mb-0">Contact Us</h2>
+    </div>
 
-   
+    <!-- form  -->
+    <section class="py-5 px-2">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+                    <div class="form-card p-4 p-md-5">
+                        <div class="position-relative" style="z-index:1">
+
+                            <!-- Heading -->
+                            <div class="text-center mb-5">
+                                <span class="badge-pill mb-3 d-inline-block">Start Your Journey</span>
+                                <h2 class="fw-bold mb-3" style="font-size:clamp(1.8rem,4vw,2.8rem);color:#024465;">
+                                    {{ $overview->apply_title ?? 'Let us assist you!' }}
+                                </h2>
+                                <p class="text-secondary mx-auto" style="max-width:640px;line-height:1.7;">
+                                    {{ $overview->apply_description ?? 'Share your details, and our expert counselors will reach out to guide you.' }}
+                                </p>
+                            </div>
+
+                            <!-- Form -->
+                            <form action="{{ route('apply-store') }}" method="POST">
+                                @csrf
+
+                                <!-- Full Name -->
+                                <div class="mb-4">
+                                    <div class="input-wrapper">
+                                        <div class="icon-box"><i class="fas fa-user"></i></div>
+                                        <input type="text" name="name" placeholder="Full Name">
+                                    </div>
+                                </div>
+
+                                <!-- Phone & Email -->
+                                <div class="row g-4 mb-4">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-wrapper">
+                                            <div class="icon-box"><i class="fas fa-phone"></i></div>
+                                            <input type="text" name="phone" placeholder="Phone Number">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-wrapper">
+                                            <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                                            <input type="text" name="email" placeholder="Email Address">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Education & GPA -->
+                                <div class="row g-4 mb-4">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="position-relative">
+                                            <input type="hidden" name="education" id="education_value">
+                                            <div class="input-wrapper" style="cursor:pointer;"
+                                                onclick="toggleDropdown('education-dropdown')">
+                                                <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
+                                                <span class="dropdown-label" id="education-label">Education Level</span>
+                                                <i class="fas fa-chevron-down ms-auto" style="color:#024465;font-size:.8rem;"></i>
+                                            </div>
+                                            <ul class="custom-dropdown-menu" id="education-dropdown">
+                                                <li onclick="selectOption('education','SSC','SSC')">SSC</li>
+                                                <li onclick="selectOption('education','HSC','HSC')">HSC</li>
+                                                <li onclick="selectOption('education','Diploma','Diploma')">Diploma</li>
+                                                <li onclick="selectOption('education','Bachelor','Bachelor')">Bachelor</li>
+                                                <li onclick="selectOption('education','Masters','Masters')">Masters</li>
+                                                <li onclick="selectOption('education','PhD','PhD')">PhD</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-wrapper">
+                                            <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                                            <input type="text" name="type" placeholder="GPA / CGPA">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Passing Year & Destination -->
+                                <div class="row g-4 mb-4">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-wrapper">
+                                            <div class="icon-box"><i class="fas fa-calendar-alt"></i></div>
+                                            <input type="text" name="type_passing_year" placeholder="Passing Year">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="position-relative">
+                                            <input type="hidden" name="study_destination" id="destination_value">
+                                            <div class="input-wrapper" style="cursor:pointer;"
+                                                onclick="toggleDropdown('destination-dropdown')">
+                                                <div class="icon-box"><i class="fas fa-globe"></i></div>
+                                                <span class="dropdown-label" id="destination-label">Study Destination</span>
+                                                <i class="fas fa-chevron-down ms-auto" style="color:#024465;font-size:.8rem;"></i>
+                                            </div>
+                                            <div class="custom-dropdown-menu" id="destination-dropdown" style="max-height:260px;">
+                                                <div style="padding:10px 12px;border-bottom:1px solid #f0f0f0;position:sticky;top:0;background:#fff;">
+                                                    <div style="display:flex;align-items:center;background:#f8f9fa;border-radius:8px;padding:6px 12px;gap:8px;">
+                                                        <i class="fas fa-search" style="color:#9ca3af;font-size:.8rem;"></i>
+                                                        <input type="text" id="country-search" placeholder="Search country..."
+                                                            style="border:none;background:transparent;outline:none;width:100%;font-size:.9rem;"
+                                                            onclick="event.stopPropagation()" oninput="filterCountries()">
+                                                    </div>
+                                                </div>
+                                                <ul class="list-unstyled mb-0" id="country-list">
+                                                    @foreach($country as $item)
+                                                    <li onclick="selectCountry('{{ $item->country }}')"
+                                                        data-country="{{ strtolower($item->country) }}"
+                                                        style="padding:10px 18px;cursor:pointer;font-size:.95rem;color:#374151;transition:background .15s;"
+                                                        onmouseover="this.style.background='rgba(0,184,212,.1)'"
+                                                        onmouseout="this.style.background=''">
+                                                        {{ $item->country }}
+                                                    </li>
+                                                    @endforeach
+                                                </ul>
+                                                <div id="no-results" style="display:none;text-align:center;padding:16px;color:#9ca3af;font-size:.9rem;">
+                                                    <i class="fas fa-search d-block mb-1"></i> No country found
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- English Proficiency & Overall Score -->
+                                <div class="row g-4 mb-4">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="position-relative">
+                                            <input type="hidden" name="english_proficiency" id="proficiency_value">
+                                            <div class="input-wrapper" style="cursor:pointer;"
+                                                onclick="toggleDropdown('proficiency-dropdown')">
+                                                <div class="icon-box"><i class="fas fa-language"></i></div>
+                                                <span class="dropdown-label" id="proficiency-label">English Proficiency</span>
+                                                <i class="fas fa-chevron-down ms-auto" style="color:#024465;font-size:.8rem;"></i>
+                                            </div>
+                                            <ul class="custom-dropdown-menu" id="proficiency-dropdown">
+                                                <li onclick="selectOption('proficiency','IELTS','IELTS')">IELTS</li>
+                                                <li onclick="selectOption('proficiency','TOEFL','TOEFL')">TOEFL</li>
+                                                <li onclick="selectOption('proficiency','PTE','PTE')">PTE</li>
+                                                <li onclick="selectOption('proficiency','DUOLINGO','DUOLINGO')">DUOLINGO</li>
+                                                <li onclick="selectOption('proficiency','None','None')">None</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-wrapper">
+                                            <div class="icon-box"><i class="fas fa-star"></i></div>
+                                            <input type="text" name="overall_score" placeholder="Overall Score">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit -->
+                                <div class="pt-2">
+                                    <button type="submit" class="btn-submit">
+                                        <span>Submit Application</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+@endsection
 
 @section('js')
 <script>
-  function toggleDropdown(id) {
-    // Close all dropdowns except the one being toggled
-    document.querySelectorAll('ul[id$="-dropdown"], div[id$="-dropdown"]').forEach(drop => {
-      if (drop.id !== id) drop.classList.add('hidden');
+    function toggleDropdown(id) {
+        var allDropdowns = document.querySelectorAll('.custom-dropdown-menu');
+        allDropdowns.forEach(function(drop) {
+            if (drop.id !== id) drop.style.display = 'none';
+        });
+        var el = document.getElementById(id);
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+
+        if (id === 'destination-dropdown' && el.style.display === 'block') {
+            document.getElementById('country-search').value = '';
+            filterCountries();
+            setTimeout(function() {
+                document.getElementById('country-search').focus();
+            }, 100);
+        }
+    }
+
+    function selectOption(type, value, label) {
+        if (type === 'education') {
+            document.getElementById('education_value').value = value;
+            document.getElementById('education-label').innerText = label;
+            document.getElementById('education-dropdown').style.display = 'none';
+        }
+        if (type === 'proficiency') {
+            document.getElementById('proficiency_value').value = value;
+            document.getElementById('proficiency-label').innerText = label;
+            document.getElementById('proficiency-dropdown').style.display = 'none';
+        }
+    }
+
+    function selectCountry(country) {
+        document.getElementById('destination_value').value = country;
+        document.getElementById('destination-label').innerText = country;
+        document.getElementById('destination-dropdown').style.display = 'none';
+    }
+
+    function filterCountries() {
+        var search = document.getElementById('country-search').value.toLowerCase();
+        var items = document.querySelectorAll('#country-list li');
+        var visible = 0;
+        items.forEach(function(item) {
+            var name = item.getAttribute('data-country') || '';
+            if (name.includes(search)) {
+                item.style.display = '';
+                visible++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        document.getElementById('no-results').style.display = (visible === 0) ? 'block' : 'none';
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.position-relative')) {
+            document.querySelectorAll('.custom-dropdown-menu').forEach(function(drop) {
+                drop.style.display = 'none';
+            });
+        }
     });
-
-    const el = document.getElementById(id);
-    el.classList.toggle('hidden');
-    
-    // Focus on search input when opening destination dropdown
-    if (id === 'destination-dropdown' && !el.classList.contains('hidden')) {
-      setTimeout(() => {
-        document.getElementById('country-search').focus();
-      }, 100);
-    }
-    
-    // Reset search when opening
-    if (id === 'destination-dropdown') {
-      document.getElementById('country-search').value = '';
-      filterCountries();
-    }
-  }
-
-  function selectValue(value) {
-    const openDropdown = document.querySelector('ul[id$="-dropdown"]:not(.hidden)');
-    if (!openDropdown) return;
-
-    if (openDropdown.id === 'education-dropdown') {
-      document.getElementById('education_value').value = value;
-      const el = document.getElementById('education-selected');
-      el.innerText = value;
-      el.classList.remove('text-gray-400');
-      el.classList.add('text-black');
-    }
-
-    if (openDropdown.id === 'proficiency-dropdown') {
-      document.getElementById('proficiency_value').value = value;
-      const el = document.getElementById('proficiency-selected');
-      el.innerText = value;
-      el.classList.remove('text-gray-400');
-      el.classList.add('text-black');
-    }
-
-    openDropdown.classList.add('hidden');
-  }
-
-  // Special function for country selection
-  function selectCountry(country) {
-    document.getElementById('destination_value').value = country;
-    const el = document.getElementById('destination-selected');
-    el.innerText = country;
-    el.classList.remove('text-gray-400');
-    el.classList.add('text-black');
-    
-    // Close dropdown
-    document.getElementById('destination-dropdown').classList.add('hidden');
-  }
-
-  // Filter countries based on search input
-  function filterCountries() {
-    const searchInput = document.getElementById('country-search').value.toLowerCase();
-    const countryItems = document.querySelectorAll('.country-item');
-    const noResults = document.getElementById('no-results');
-    let visibleCount = 0;
-
-    countryItems.forEach(item => {
-      const countryName = item.getAttribute('data-country');
-      if (countryName.includes(searchInput)) {
-        item.style.display = '';
-        visibleCount++;
-      } else {
-        item.style.display = 'none';
-      }
-    });
-
-    // Show/hide no results message
-    if (visibleCount === 0) {
-      noResults.classList.remove('hidden');
-    } else {
-      noResults.classList.add('hidden');
-    }
-  }
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.cursor-pointer') && !e.target.closest('[id$="-dropdown"]')) {
-      document.querySelectorAll('ul[id$="-dropdown"], div[id$="-dropdown"]').forEach(drop => {
-        drop.classList.add('hidden');
-      });
-    }
-  });
 </script>
-@endsection
-
 @endsection

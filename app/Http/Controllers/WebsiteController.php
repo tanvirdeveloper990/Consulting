@@ -208,7 +208,7 @@ class WebsiteController extends Controller
     {
         $data = $request->all();
         Apply::create($data);
-        return redirect()->back()->with('success', 'Application submitted successfully.');
+        return redirect()->back()->with('success', 'Application submitted successfully.')->withFragment('apply-form');
     }
 
 

@@ -1,8 +1,72 @@
 @extends('layouts.app')
 @section('title','Home')
 
-@section('content')
 
+@section('css')
+<style>
+    .form-card,
+    .form-card *,
+    .row,
+    .col-12,
+    .col-lg-6 {
+        overflow: visible !important;
+    }
+
+    .custom-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 9999 !important;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
+        max-height: 240px;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .custom-dropdown-menu li {
+        padding: 11px 18px;
+        cursor: pointer;
+        list-style: none;
+        font-size: .95rem;
+        color: #374151;
+        border-bottom: 1px solid #f9fafb;
+    }
+
+    .custom-dropdown-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .custom-dropdown-menu li:hover {
+        background: rgba(0, 184, 212, .1);
+        color: #0A474C;
+    }
+
+    @keyframes toastFade {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+@endsection
+
+@section('content')
+  <!-- Success Toast -->
+    @if(session('success'))
+    <div class="success-toast" id="successToast">
+        <i class="fas fa-check-circle" style="color:#00B8D4;font-size:1.2rem;"></i>
+        {{ session('success') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            var t = document.getElementById('successToast');
+            if (t) t.style.display = 'none';
+        }, 4000);
+    </script>
+    @endif
 <section>
 
 
@@ -444,7 +508,7 @@
         </div>
     </section>
 
-<!--testimonial-section  -->
+    <!--testimonial-section  -->
     <section class="testimonial-section py-5">
         <div class="container">
             <div class="row align-items-center bg-white p-4 p-md-5 rounded-4 shadow-sm">
@@ -504,12 +568,12 @@
             var stories = [];
             @foreach($stories as $s)
             stories.push({
-                name:        "{{ addslashes($s->name) }}",
+                name: "{{ addslashes($s->name) }}",
                 designation: "{{ addslashes($s->designation) }}",
-                title_1:     "{{ addslashes($s->title_1) }}",
-                title_2:     "{{ addslashes($s->title_2) }}",
+                title_1: "{{ addslashes($s->title_1) }}",
+                title_2: "{{ addslashes($s->title_2) }}",
                 description: "{{ addslashes($s->description) }}",
-                image:       "{{ $s->image_url }}"
+                image: "{{ $s->image_url }}"
             });
             @endforeach
 
@@ -517,7 +581,7 @@
 
             function setTransitions() {
                 var transition = 'opacity .35s ease, transform .35s ease';
-                ['quote-text','author-name','visa-type','title-1','title-2','current-num'].forEach(function(id) {
+                ['quote-text', 'author-name', 'visa-type', 'title-1', 'title-2', 'current-num'].forEach(function(id) {
                     var el = document.getElementById(id);
                     if (el) el.style.transition = transition;
                 });
@@ -530,12 +594,15 @@
 
                 current = (current + 1) % stories.length;
                 var s = stories[current];
-                var ids = ['quote-text','author-name','visa-type','title-1','title-2','current-num'];
+                var ids = ['quote-text', 'author-name', 'visa-type', 'title-1', 'title-2', 'current-num'];
 
                 // fade out
                 ids.forEach(function(id) {
                     var el = document.getElementById(id);
-                    if (el) { el.style.opacity = '0'; el.style.transform = 'translateY(8px)'; }
+                    if (el) {
+                        el.style.opacity = '0';
+                        el.style.transform = 'translateY(8px)';
+                    }
                 });
                 var mainImg = document.getElementById('main-img');
                 if (mainImg) mainImg.style.opacity = '0';
@@ -570,7 +637,10 @@
                     // fade in
                     ids.forEach(function(id) {
                         var el2 = document.getElementById(id);
-                        if (el2) { el2.style.opacity = '1'; el2.style.transform = 'translateY(0)'; }
+                        if (el2) {
+                            el2.style.opacity = '1';
+                            el2.style.transform = 'translateY(0)';
+                        }
                     });
 
                 }, 300);
@@ -600,8 +670,8 @@
             @if($partners->isNotEmpty())
 
             @php
-                $row1 = $partners->take((int)ceil($partners->count() / 2));
-                $row2 = $partners->skip((int)ceil($partners->count() / 2));
+            $row1 = $partners->take((int)ceil($partners->count() / 2));
+            $row2 = $partners->skip((int)ceil($partners->count() / 2));
             @endphp
 
             <!-- ══════ ROW 1 — Right to Left ══════ -->
@@ -659,11 +729,36 @@
         </div>
     </section>
 
-    <!-- from  -->
-    <section class="py-5 px-2">
+    <!-- form section -->
+    <section class="py-5 px-2" id="apply-form">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-xl-10">
+
+                    {{-- ✅ Success Toast — form এর ঠিক উপরে --}}
+                    @if(session('success'))
+                    <div id="successToast" style="
+                        background: linear-gradient(135deg, #0A474C, #00B8D4);
+                        color: #fff;
+                        padding: 16px 24px;
+                        border-radius: 14px;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        margin-bottom: 24px;
+                        box-shadow: 0 6px 24px rgba(0,184,212,.25);
+                        animation: toastFade .4s ease;
+                    ">
+                        <i class="fas fa-check-circle" style="font-size:1.4rem;flex-shrink:0;"></i>
+                        <span>{{ session('success') }}</span>
+                        <button onclick="document.getElementById('successToast').style.display='none'"
+                            style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:.85rem;">
+                            ✕
+                        </button>
+                    </div>
+                    @endif
 
                     <div class="form-card p-4 p-md-5">
                         <div class="position-relative" style="z-index:1">
@@ -672,16 +767,16 @@
                             <div class="text-center mb-5">
                                 <span class="badge-pill mb-3 d-inline-block">Start Your Journey</span>
                                 <h2 class="fw-bold mb-3" style="font-size:clamp(1.8rem,4vw,2.8rem);color:#024465;">
-                                    Let us assist you!
+                                    {{ $overview->apply_title ?? 'Let us assist you!' }}
                                 </h2>
                                 <p class="text-secondary mx-auto" style="max-width:640px;line-height:1.7;">
-                                    Share your details, and our expert counselors will reach out to guide you toward the ideal course, university, destination, and scholarship options.
+                                    {{ $overview->apply_description ?? 'Share your details, and our expert counselors will reach out to guide you.' }}
                                 </p>
                             </div>
 
                             <!-- Form -->
-                            <form action="#" method="POST">
-                                <input type="hidden" name="_token" value="">
+                            <form action="{{ route('apply-store') }}" method="POST">
+                                @csrf
 
                                 <!-- Full Name -->
                                 <div class="mb-4">
@@ -713,10 +808,10 @@
                                         <div class="position-relative">
                                             <input type="hidden" name="education" id="education_value">
                                             <div class="input-wrapper" style="cursor:pointer;"
-                                                onclick="toggleDropdown('education-dropdown','education-chevron')">
+                                                onclick="toggleDropdown('education-dropdown')">
                                                 <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
                                                 <span class="dropdown-label" id="education-label">Education Level</span>
-                                                <i class="fas fa-chevron-down chevron ms-2" id="education-chevron" style="color:#024465;font-size:.8rem;"></i>
+                                                <i class="fas fa-chevron-down ms-auto" style="color:#024465;font-size:.8rem;"></i>
                                             </div>
                                             <ul class="custom-dropdown-menu" id="education-dropdown">
                                                 <li onclick="selectOption('education','SSC','SSC')">SSC</li>
@@ -748,40 +843,33 @@
                                         <div class="position-relative">
                                             <input type="hidden" name="study_destination" id="destination_value">
                                             <div class="input-wrapper" style="cursor:pointer;"
-                                                onclick="toggleDropdown('destination-dropdown','destination-chevron')">
+                                                onclick="toggleDropdown('destination-dropdown')">
                                                 <div class="icon-box"><i class="fas fa-globe"></i></div>
                                                 <span class="dropdown-label" id="destination-label">Study Destination</span>
-                                                <i class="fas fa-chevron-down chevron ms-2" id="destination-chevron" style="color:#024465;font-size:.8rem;"></i>
+                                                <i class="fas fa-chevron-down ms-auto" style="color:#024465;font-size:.8rem;"></i>
                                             </div>
-                                            <div class="custom-dropdown-menu" id="destination-dropdown">
-                                                <div class="dropdown-search-wrap">
-                                                    <div class="dropdown-search-inner">
-                                                        <i class="fas fa-search"></i>
+                                            <div class="custom-dropdown-menu" id="destination-dropdown" style="max-height:260px;">
+                                                <div style="padding:10px 12px;border-bottom:1px solid #f0f0f0;position:sticky;top:0;background:#fff;">
+                                                    <div style="display:flex;align-items:center;background:#f8f9fa;border-radius:8px;padding:6px 12px;gap:8px;">
+                                                        <i class="fas fa-search" style="color:#9ca3af;font-size:.8rem;"></i>
                                                         <input type="text" id="country-search" placeholder="Search country..."
+                                                            style="border:none;background:transparent;outline:none;width:100%;font-size:.9rem;"
                                                             onclick="event.stopPropagation()" oninput="filterCountries()">
                                                     </div>
                                                 </div>
-                                                <ul class="country-scroll list-unstyled mb-0" id="country-list">
-                                                    <li onclick="selectCountry('Australia')" data-country="australia">Australia</li>
-                                                    <li onclick="selectCountry('Denmark')" data-country="denmark">Denmark</li>
-                                                    <li onclick="selectCountry('New Zealand')" data-country="new zealand">New Zealand</li>
-                                                    <li onclick="selectCountry('Canada')" data-country="canada">Canada</li>
-                                                    <li onclick="selectCountry('Finland')" data-country="finland">Finland</li>
-                                                    <li onclick="selectCountry('Cyprus')" data-country="cyprus">Cyprus</li>
-                                                    <li onclick="selectCountry('Malta')" data-country="malta">Malta</li>
-                                                    <li onclick="selectCountry('Hungary')" data-country="hungary">Hungary</li>
-                                                    <li onclick="selectCountry('Sweden')" data-country="sweden">Sweden</li>
-                                                    <li onclick="selectCountry('China')" data-country="china">China</li>
-                                                    <li onclick="selectCountry('Scotland')" data-country="scotland">Scotland</li>
-                                                    <li onclick="selectCountry('Italy')" data-country="italy">Italy</li>
-                                                    <li onclick="selectCountry('Estonia')" data-country="estonia">Estonia</li>
-                                                    <li onclick="selectCountry('Croatia')" data-country="croatia">Croatia</li>
-                                                    <li onclick="selectCountry('Malaysia')" data-country="malaysia">Malaysia</li>
-                                                    <li onclick="selectCountry('Dubai')" data-country="dubai">Dubai</li>
+                                                <ul class="list-unstyled mb-0" id="country-list">
+                                                    @foreach($country as $item)
+                                                    <li onclick="selectCountry('{{ $item->country }}')"
+                                                        data-country="{{ strtolower($item->country) }}"
+                                                        style="padding:10px 18px;cursor:pointer;font-size:.95rem;color:#374151;"
+                                                        onmouseover="this.style.background='rgba(0,184,212,.1)'"
+                                                        onmouseout="this.style.background=''">
+                                                        {{ $item->country }}
+                                                    </li>
+                                                    @endforeach
                                                 </ul>
-                                                <div class="no-results" id="no-results">
-                                                    <i class="fas fa-search fa-2x mb-2 d-block" style="color:#d1d5db;"></i>
-                                                    No country found
+                                                <div id="no-results" style="display:none;text-align:center;padding:16px;color:#9ca3af;font-size:.9rem;">
+                                                    <i class="fas fa-search d-block mb-1"></i> No country found
                                                 </div>
                                             </div>
                                         </div>
@@ -794,10 +882,10 @@
                                         <div class="position-relative">
                                             <input type="hidden" name="english_proficiency" id="proficiency_value">
                                             <div class="input-wrapper" style="cursor:pointer;"
-                                                onclick="toggleDropdown('proficiency-dropdown','proficiency-chevron')">
+                                                onclick="toggleDropdown('proficiency-dropdown')">
                                                 <div class="icon-box"><i class="fas fa-language"></i></div>
                                                 <span class="dropdown-label" id="proficiency-label">English Proficiency</span>
-                                                <i class="fas fa-chevron-down chevron ms-2" id="proficiency-chevron" style="color:#024465;font-size:.8rem;"></i>
+                                                <i class="fas fa-chevron-down ms-auto" style="color:#024465;font-size:.8rem;"></i>
                                             </div>
                                             <ul class="custom-dropdown-menu" id="proficiency-dropdown">
                                                 <li onclick="selectOption('proficiency','IELTS','IELTS')">IELTS</li>
@@ -815,6 +903,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Submit -->
                                 <div class="pt-2">
                                     <button type="submit" class="btn-submit">
@@ -826,7 +915,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -837,16 +925,70 @@
 
 
 
+    @endsection
 
 
 
+    @section('js')
+    <script>
+        function toggleDropdown(id) {
+            var allDropdowns = document.querySelectorAll('.custom-dropdown-menu');
+            allDropdowns.forEach(function(drop) {
+                if (drop.id !== id) drop.style.display = 'none';
+            });
+            var el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
 
+            if (id === 'destination-dropdown' && el.style.display === 'block') {
+                document.getElementById('country-search').value = '';
+                filterCountries();
+                setTimeout(function() {
+                    document.getElementById('country-search').focus();
+                }, 100);
+            }
+        }
 
-</section>
+        function selectOption(type, value, label) {
+            if (type === 'education') {
+                document.getElementById('education_value').value = value;
+                document.getElementById('education-label').innerText = label;
+                document.getElementById('education-dropdown').style.display = 'none';
+            }
+            if (type === 'proficiency') {
+                document.getElementById('proficiency_value').value = value;
+                document.getElementById('proficiency-label').innerText = label;
+                document.getElementById('proficiency-dropdown').style.display = 'none';
+            }
+        }
 
-@endsection
+        function selectCountry(country) {
+            document.getElementById('destination_value').value = country;
+            document.getElementById('destination-label').innerText = country;
+            document.getElementById('destination-dropdown').style.display = 'none';
+        }
 
+        function filterCountries() {
+            var search = document.getElementById('country-search').value.toLowerCase();
+            var items = document.querySelectorAll('#country-list li');
+            var visible = 0;
+            items.forEach(function(item) {
+                var name = item.getAttribute('data-country') || '';
+                if (name.includes(search)) {
+                    item.style.display = '';
+                    visible++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            document.getElementById('no-results').style.display = (visible === 0) ? 'block' : 'none';
+        }
 
-@section('js')
-
-@endsection
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.position-relative')) {
+                document.querySelectorAll('.custom-dropdown-menu').forEach(function(drop) {
+                    drop.style.display = 'none';
+                });
+            }
+        });
+    </script>
+    @endsection

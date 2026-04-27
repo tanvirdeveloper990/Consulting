@@ -104,17 +104,11 @@
                                 </div>
 
                                 <!-- Overall Score -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label class="form-label">Overall Score</label>
                                     <input type="text" class="form-control"
                                            name="overall_score"
                                            value="{{ old('overall_score', $data->overall_score) }}">
-                                </div>
-
-
-                                 <div class="col-md-6">
-                                    <label for="score" class="form-label">Low Band Score</label>
-                                    <input type="text" class="form-control" id="score" name="score" value="{{ old('score',$data->score) }}" placeholder="Enter Overall Score">
                                 </div>
 
                                 <!-- Status -->
