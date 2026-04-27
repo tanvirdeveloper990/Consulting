@@ -23,7 +23,25 @@
                             <div class="row g-3">
                                 <!-- Country -->
                                 <div class="col-md-6">
-                                    <label class="form-label">Country</label>
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"
+                                        placeholder="Enter your Title" value="{{ old('title')}}" required>
+                                    @error('title')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea
+                                        name="description"
+                                        id="description"
+                                        class="form-control"
+                                        rows="3"
+                                        placeholder="Write something here..."></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Country Name</label>
                                     <input type="text" class="form-control @error('country') is-invalid @enderror" name="country"
                                         placeholder="Enter your country" value="{{ old('country')}}" required>
                                     @error('country')
@@ -32,7 +50,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="flag" class="form-label">Flag</label>
+                                    <label for="flag" class="form-label">Country Flag</label>
                                     <input type="file" class="form-control" id="flag" name="flag" value="{{ old('flag') }}">
                                 </div>
                                 <div class="col-md-6">

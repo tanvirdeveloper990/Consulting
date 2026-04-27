@@ -25,19 +25,38 @@
 
                             <div class="row g-3">
 
-                             <!-- Country -->
+                                <!-- Country -->
                                 <div class="col-md-6">
-                                    <label class="form-label">Country</label>
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"
+                                        placeholder="Enter your Title" value="{{$data->title}}">
+                                    @error('title')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea
+                                        name="description"
+                                        id="description"
+                                        class="form-control"
+                                        rows="3"
+                                        placeholder="Write something here...">{{$data->description}}</textarea>
+                                </div>
+
+                                <!-- Country -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Country Name</label>
                                     <input type="text" class="form-control @error('country') is-invalid @enderror" name="country"
                                         placeholder="Enter your country" value="{{$data->country}}" required>
                                     @error('country')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
+
                                 <!-- Flag -->
                                 <div class="col-md-6">
-                                    <label class="form-label">Flag</label>
+                                    <label class="form-label">Country Flag</label>
                                     <input type="file" class="form-control" name="flag">
                                     @if($data->flag)
                                     <img src="{{ Storage::url($data->flag) }}" class="mt-2" style="height:50px;">

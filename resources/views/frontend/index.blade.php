@@ -47,26 +47,78 @@
     }
 
     @keyframes toastFade {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<style>
+    .news-card {
+        border-color: #e8e8e8 !important;
+        transition: box-shadow 0.4s, border-color 0.4s;
+    }
+
+    .news-card:hover {
+        box-shadow: 0 6px 24px rgba(10, 71, 76, 0.12);
+        border-color: rgba(10, 71, 76, 0.2) !important;
+    }
+
+    .news-title {
+        transition: color 0.3s;
+    }
+
+    .news-card:hover .news-title {
+        color: #0A474C !important;
+    }
+
+    .news-img:hover {
+        transform: scale(1.04);
+    }
+
+    @media(min-width:768px) {
+        .news-img {
+            height: 180px !important;
+        }
+    }
+
+    @media(min-width:992px) {
+        .news-img {
+            height: 210px !important;
+        }
+    }
+</style>
+
+<style>
+    .faq-item {
+        transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .faq-item:hover {
+        background-color: rgba(10, 71, 76, 0.07) !important;
+        box-shadow: 0 4px 16px rgba(10, 71, 76, 0.10);
+    }
+
+    .accordion-button:not(.collapsed) {
+        color: #0A474C !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        filter: invert(25%) sepia(80%) saturate(600%) hue-rotate(155deg);
+    }
 </style>
 @endsection
 
 @section('content')
-  <!-- Success Toast -->
-    @if(session('success'))
-    <div class="success-toast" id="successToast">
-        <i class="fas fa-check-circle" style="color:#00B8D4;font-size:1.2rem;"></i>
-        {{ session('success') }}
-    </div>
-    <script>
-        setTimeout(function() {
-            var t = document.getElementById('successToast');
-            if (t) t.style.display = 'none';
-        }, 4000);
-    </script>
-    @endif
+
 <section>
 
 
@@ -197,185 +249,37 @@
         <div class="container-xl">
 
             <h2 class="section-title text-center mb-5">
-                <span class="title-select">SELECT </span>
-                <span class="title-your">YOUR </span>
-                <span class="title-dest">DESTINATION</span>
+                <span class="title-select">{{$overview->top_study_destination_title}}</span>
+                <span class="title-your">{{$overview->top_study_destination_title1}}</span>
             </h2>
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
 
-                <div class="col">
+                @foreach($country->take(9) as $item)
+                <div class="col {{ $loop->index >= 3 ? 'd-none d-sm-block' : '' }}">
                     <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=700&q=80"
-                                alt="Australia" />
+                        <a href="{{ route('study.destination',$item->id) }}" class="dest-card">
+                            <img class="card-photo" src="{{Storage::url($item->thumbnail)}}"
+                                alt="{{$item->country}}" />
                             <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/au.png" alt="AU" />
-                                AUSTRALIA
+                                <img class="flag" src="{{Storage::url($item->flag)}}" alt="{{$item->country}}" />
+                                {{$item->country}}
                             </div>
                         </a>
                         <div class="dest-popup">
-                            <h3>Study in Australia</h3>
-                            <p>Australia is a top destination for international students, offering a world-class education system,
-                                diverse cultural experiences, and a vibrant lifestyle. We have partner 10+ universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
+                            <h3> {{$item->title}}</h3>
+                            <p>{{$item->description}}</p>
+                            <a href="{{ route('study.destination',$item->id) }}" class="btn-discover">DISCOVER</a>
                         </div>
                     </div>
                 </div>
+                @endforeach
 
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=700&q=80"
-                                alt="UK" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/gb.png" alt="UK" />
-                                UK
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in UK</h3>
-                            <p>The UK is home to some of the world's oldest and most prestigious universities. Experience rich
-                                history, multicultural cities, and globally recognised qualifications. 15+ partner universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=700&q=80"
-                                alt="USA" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/us.png" alt="US" />
-                                USA
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in USA</h3>
-                            <p>The USA offers unparalleled research opportunities, cutting-edge technology campuses, and vibrant
-                                student life. Choose from thousands of programs with our 20+ partner universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=700&q=80"
-                                alt="Japan" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/jp.png" alt="JP" />
-                                JAPAN
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in Japan</h3>
-                            <p>Japan blends ancient tradition with futuristic innovation. Study at world-class institutions known for
-                                science and engineering while immersing in a unique cultural experience. 8+ partners.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=700&q=80"
-                                alt="New Zealand" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/nz.png" alt="NZ" />
-                                NEW ZEALAND
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in New Zealand</h3>
-                            <p>New Zealand offers stunning landscapes, a safe and welcoming environment, and internationally
-                                recognised qualifications. Discover quality education with a relaxed lifestyle. 6+ partners.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=700&q=80"
-                                alt="Malaysia" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/my.png" alt="MY" />
-                                MALAYSIA
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in Malaysia</h3>
-                            <p>Malaysia is a vibrant hub for international students in Asia, offering affordable world-class
-                                education, a multicultural society, and modern facilities. We partner with 12+ top universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=700&q=80"
-                                alt="Malaysia" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/my.png" alt="MY" />
-                                MALAYSIA
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in Malaysia</h3>
-                            <p>Malaysia is a vibrant hub for international students in Asia, offering affordable world-class
-                                education, a multicultural society, and modern facilities. We partner with 12+ top universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=700&q=80"
-                                alt="Malaysia" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/my.png" alt="MY" />
-                                MALAYSIA
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in Malaysia</h3>
-                            <p>Malaysia is a vibrant hub for international students in Asia, offering affordable world-class
-                                education, a multicultural society, and modern facilities. We partner with 12+ top universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="dest-wrapper">
-                        <a href="#" class="dest-card">
-                            <img class="card-photo" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=700&q=80"
-                                alt="Malaysia" />
-                            <div class="dest-label">
-                                <img class="flag" src="https://flagcdn.com/w80/my.png" alt="MY" />
-                                MALAYSIA
-                            </div>
-                        </a>
-                        <div class="dest-popup">
-                            <h3>Study in Malaysia</h3>
-                            <p>Malaysia is a vibrant hub for international students in Asia, offering affordable world-class
-                                education, a multicultural society, and modern facilities. We partner with 12+ top universities.</p>
-                            <a href="#" class="btn-discover">DISCOVER</a>
-                        </div>
-                    </div>
-                </div>
 
             </div>
             <!-- View All Button -->
             <div class="text-center mt-5">
-                <a href="#" class="btn-view-services">
+                <a href="{{ route('all-destination')}}" class="btn-view-services">
                     <span class="sweep-bg"></span>
                     <span class="btn-text">View All</span>
                 </a>
@@ -389,7 +293,7 @@
 
             <!-- TOP ROW: Title + Button (desktop only) -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-5 gap-3">
-                <h2 class="section-title mb-0">Our Services</h2>
+                <h2 class="section-title mb-0">{{ $overview->gallery_title1 }}</h2>
                 <a href="{{route('all-services')}}" class="btn-view-services d-none d-lg-inline-block">
                     <span class="sweep-bg"></span>
                     <span class="btn-text">View Services</span>
@@ -449,7 +353,7 @@
 
             <!-- Heading -->
             <div class="text-center">
-                <h2 class="main-title py-4">Your Journey, <em>Step by Step</em></h2>
+                <h2 class="main-title py-4"> {{ $overview->still_have_questions_title }} <em>{{ $overview->still_have_questions_title1 }}</em></h2>
             </div>
 
             @php
@@ -535,7 +439,8 @@
                         <div class="quote-area">
                             <i class="fas fa-quote-left display-4 text-light-gray mb-3 d-block"></i>
 
-                            <p class="fs-5 text-secondary lh-lg mb-4" id="quote-text">
+                            <p class="fs-5 text-secondary lh-lg mb-4" id="quote-text"
+                                style="display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
                                 {{ $stories->first()->description }}
                             </p>
 
@@ -661,11 +566,138 @@
 
 
 
+    {{-- FAQ Section --}}
+    <section class="py-4 py-md-5 px-2 px-md-3">
+        <div class="container" style="max-width: 960px;">
+            <div class="text-center mb-4 mb-md-5">
+                <h2 class="fw-bold text-uppercase mb-3" style="font-size:clamp(1.4rem,4vw,2rem);">
+                    {{ $overview->frequently_asked_question_title }}
+                    <span style="color:#0A474C;">{{ $overview->frequently_asked_question_title1 }}</span>
+                </h2>
+                <div style="width:72px; height:4px; background:#0A474C; margin:0 auto 1.25rem;"></div>
+                <p class="text-muted mx-auto px-2" style="max-width:560px; line-height:1.7; font-size:clamp(.875rem,2vw,1rem);">
+                    {{ $overview->frequently_asked_question_description }}
+                </p>
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+                @foreach($frequently as $index => $item)
+                <div class="accordion-item faq-item mb-2 mb-md-3 rounded-3 rounded-md-4 overflow-hidden border"
+                    style="border-color:rgba(10,71,76,0.2) !important;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faq{{ $index }}"
+                            style="background:transparent; box-shadow:none; font-size:clamp(.9rem,2.5vw,1.05rem); color:#1a1a1a; padding:14px 16px;">
+                            <i class="fas fa-user-plus me-2 me-md-3 flex-shrink-0" style="color:#0A474C; font-size:.9rem;"></i>
+                            {{ $item->title }}
+                        </button>
+                    </h2>
+                    <div id="faq{{ $index }}"
+                        class="accordion-collapse collapse"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-secondary ps-3 ps-md-5" style="font-size:clamp(.875rem,2vw,.95rem); line-height:1.7;">
+                            {{ $item->description }}
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+
+
+    {{-- News and Updates Section --}}
+    <section class="py-4 py-md-5 px-2 px-md-3" style="background:#f8f9fa;">
+        <div class="container">
+            <div class="text-center mb-4 mb-md-5">
+                <h2 class="fw-bold text-uppercase mb-3" style="font-size:clamp(1.4rem,4vw,2rem);">
+                    {{ $overview->news_and_updates_title }}
+                    <span style="color:#0A474C;">{{ $overview->news_and_updates_title1 }}</span>
+                </h2>
+                <div style="width:72px; height:4px; background:#0A474C; margin:0 auto 1.25rem;"></div>
+                <p class="text-muted mx-auto px-2" style="max-width:680px; font-size:clamp(.875rem,2vw,1rem);">
+                    {{ $overview->news_and_updates_description }}
+                </p>
+            </div>
+
+            <div class="row g-3 g-md-4">
+                @foreach($blogs->take(4) as $blog)
+                <div class="col-12 col-md-6">
+                    <div class="news-card bg-white h-100 border rounded-3 rounded-md-4 overflow-hidden">
+                        <div class="row g-0 h-100">
+
+                            {{-- Left: Text --}}
+                            <div class="col-7 col-sm-8 p-3 p-md-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    {{-- Location --}}
+                                    <div class="d-flex align-items-center gap-1 mb-1 text-secondary" style="font-size:.78rem;">
+                                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <strong class="text-dark" style="font-size:.78rem;">{{ $blog->country }}</strong>
+                                    </div>
+
+                                    {{-- Date --}}
+                                    <div class="d-flex align-items-center gap-1 mb-2 text-secondary" style="font-size:.75rem;">
+                                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        {{ \Carbon\Carbon::parse($blog->story_date)->format('M d, Y') }}
+                                    </div>
+
+                                    {{-- Title --}}
+                                    <a href="{{ route('blog.single', $blog->slug) }}" class="text-decoration-none">
+                                        <h6 class="fw-bold mb-2 news-title"
+                                            style="color:#1a1a1a; font-size:clamp(.85rem,2.2vw,.95rem); line-height:1.4;
+                                               display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                                            {{ $blog->title }}
+                                        </h6>
+                                        {{-- Description: hidden on mobile --}}
+                                        <p class="text-secondary d-none d-sm-block"
+                                            style="font-size:.8rem; line-height:1.6;
+                                              display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
+                                            {{ $blog->short_description }}
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {{-- Right: Image --}}
+                            <div class="col-5 col-sm-4 d-flex align-items-center justify-content-center p-2 p-md-3">
+                                <a href="{{ route('blog.single', $blog->slug) }}" class="d-block w-100">
+                                    <img src="{{ Storage::url($blog->thumbnail_one) }}"
+                                        alt="{{ $blog->title }}"
+                                        class="news-img rounded-3 shadow-sm w-100"
+                                        style="height:130px; object-fit:cover; transition:transform 0.4s;">
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            {{-- View All Button --}}
+            <div class="text-center mt-4 mt-md-5">
+                <a href="{{ route('news-updates') }}"
+                    class="btn text-white px-4 px-md-5 py-2 py-md-3 rounded-pill fw-semibold"
+                    style="background-color:#0A474C; font-size:clamp(.875rem,2vw,1rem);">
+                    View All Stories
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- OUR PARTNER -->
     <section class="partner-section">
         <div>
 
-            <h2 class="section-heading">OUR PARTNER <span>UNIVERSITIES</span></h2>
+            <h2 class="section-heading">{{ $overview->our_parents_title }} <span>{{ $overview->our_parents_title1 }}</span></h2>
 
             @if($partners->isNotEmpty())
 
@@ -729,37 +761,11 @@
         </div>
     </section>
 
-    <!-- form section -->
-    <section class="py-5 px-2" id="apply-form">
+    <!-- form  -->
+    <section class="py-5 px-2">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-xl-10">
-
-                    {{-- ✅ Success Toast — form এর ঠিক উপরে --}}
-                    @if(session('success'))
-                    <div id="successToast" style="
-                        background: linear-gradient(135deg, #0A474C, #00B8D4);
-                        color: #fff;
-                        padding: 16px 24px;
-                        border-radius: 14px;
-                        font-weight: 600;
-                        font-size: 1rem;
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        margin-bottom: 24px;
-                        box-shadow: 0 6px 24px rgba(0,184,212,.25);
-                        animation: toastFade .4s ease;
-                    ">
-                        <i class="fas fa-check-circle" style="font-size:1.4rem;flex-shrink:0;"></i>
-                        <span>{{ session('success') }}</span>
-                        <button onclick="document.getElementById('successToast').style.display='none'"
-                            style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:.85rem;">
-                            ✕
-                        </button>
-                    </div>
-                    @endif
-
                     <div class="form-card p-4 p-md-5">
                         <div class="position-relative" style="z-index:1">
 
@@ -861,7 +867,7 @@
                                                     @foreach($country as $item)
                                                     <li onclick="selectCountry('{{ $item->country }}')"
                                                         data-country="{{ strtolower($item->country) }}"
-                                                        style="padding:10px 18px;cursor:pointer;font-size:.95rem;color:#374151;"
+                                                        style="padding:10px 18px;cursor:pointer;font-size:.95rem;color:#374151;transition:background .15s;"
                                                         onmouseover="this.style.background='rgba(0,184,212,.1)'"
                                                         onmouseout="this.style.background=''">
                                                         {{ $item->country }}
@@ -919,8 +925,6 @@
             </div>
         </div>
     </section>
-
-
 
 
 

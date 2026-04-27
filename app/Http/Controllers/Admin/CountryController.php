@@ -46,6 +46,8 @@ class CountryController extends Controller
             'title' => 'nullable|string|max:255',
             'flag' => 'nullable',
             'thumbnail' => 'nullable',
+            'title' => 'nullable',
+            'description' => 'nullable',
            
         ]);
 

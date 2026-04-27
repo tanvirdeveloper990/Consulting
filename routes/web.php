@@ -54,9 +54,9 @@ Route::get('/cmd', function () {
 
 Route::get('/', [WebsiteController::class, 'home'])->name('index');
 Route::get('all-services', [WebsiteController::class, 'allservices'])->name('all-services');
-
 Route::get('study-destination/{id}', [WebsiteController::class, 'destination'])->name('study.destination');
-
+Route::get('testimonial', [WebsiteController::class,'testimonial'])->name('testimonial');
+Route::get('all-destination', [WebsiteController::class,'alldestination'])->name('all-destination');
 
 Route::get('service-and-support', [WebsiteController::class, 'services'])->name('service-support');
 Route::get('/about-us', [WebsiteController::class, 'abouts'])->name('about-us');

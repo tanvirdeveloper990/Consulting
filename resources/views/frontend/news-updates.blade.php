@@ -1,99 +1,152 @@
 @extends('layouts.app')
 @section('title','News And Updates')
 
+@section('css')
+
+
+<style>
+    /* ── Page Banner ── */
+    .page-banner {
+        width: 100%;
+        min-height: 180px;
+        background: linear-gradient(135deg, #0A474C 0%, #0d6b72 50%, #00B8D4 100%);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .page-banner::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+    }
+
+    .page-banner .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-banner__title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0;
+        letter-spacing: -.02em;
+    }
+
+    @media (min-width: 992px) {
+        .page-banner {
+            display: flex;
+        }
+    }
+</style>
+
+@endsection
+
 @section('content')
 
 
+<div class="page-banner">
+    <div class="container">
+        <h1 class="page-banner__title">Blogs & Events</h1>
+    </div>
+</div>
 
-<main class="max-w-7xl mx-auto">
-    <!-- News and updated Section -->
-    <section class="py-6 px-4">
-        <div class="container mx-auto">
-            <!-- Section Header -->
-            <div class="text-center mb-8">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 uppercase">
-                    {{ \App\Helpers\TranslateHelper::translate($overview->news_and_updates_title) }}
-                    <span class="text-primary">{{ \App\Helpers\TranslateHelper::translate($overview->news_and_updates_title1) }}</span>
+<main class="container-xl px-3 px-md-4">
+
+
+
+
+    <section class="py-5">
+        <div class="container">
+
+            {{-- Section Header --}}
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-uppercase mb-3" style="font-size:clamp(1.8rem,4vw,2.5rem); color:#1a1a1a;">
+                    {{ $overview->news_and_updates_title }}
+                    <span style="color:var(--primary);">{{ $overview->news_and_updates_title1 }}</span>
                 </h2>
-                <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
-                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
-                    {{ \App\Helpers\TranslateHelper::translate($overview->news_and_updates_description) }}
+                <div class="section-divider"></div>
+                <p class="text-muted mx-auto" style="max-width:680px; font-size:1rem; line-height:1.7;">
+                    {{ $overview->news_and_updates_description }}
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 px-4 lg:px-8">
+            {{-- Cards Grid --}}
+            <div class="row g-4 px-2 px-lg-4">
                 @foreach($blogs as $blog)
-                <!-- Story Card -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 hover:border-primary/20">
-                    <div class="flex flex-col md:flex-row h-full">
+                <div class="col-12 col-lg-6">
+                    <div class="bg-white h-100 border rounded-4 overflow-hidden"
+                        style="border-color:#e8e8e8 !important; transition: all 0.5s;"
+                        onmouseover="this.style.boxShadow='0 8px 32px rgba(10,71,76,0.13)'; this.style.borderColor='rgba(10,71,76,0.2)';"
+                        onmouseout="this.style.boxShadow='none'; this.style.borderColor='#e8e8e8';">
+                        <div class="row g-0 h-100">
 
-                        <!-- Left Side: Text Content -->
-                        <div class="flex-1 p-6 lg:p-8 flex flex-col justify-between">
-                            <!-- Location Badge -->
-                            <div class="flex items-center gap-2 mb-4">
-                                <div class="flex items-center gap-2 text-sm">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    <span class="font-semibold text-gray-700">
-                                        {{ \App\Helpers\TranslateHelper::translate($blog->country) }}
-                                    </span>
+                            {{-- Left: Text Content --}}
+                            <div class="col-12 col-md-7 p-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    {{-- Location --}}
+                                    <div class="d-flex align-items-center gap-2 mb-2 small text-secondary">
+                                        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <strong class="text-dark">{{ $blog->country }}</strong>
+                                    </div>
+
+                                    {{-- Date --}}
+                                    <div class="d-flex align-items-center gap-2 mb-3 small text-secondary">
+                                        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        {{ \Carbon\Carbon::parse($blog->story_date)->format('F d, Y') }}
+                                    </div>
+
+                                    {{-- Title --}}
+                                    <a href="{{ route('blog.single', $blog->slug) }}" class="text-decoration-none">
+                                        <h5 class="fw-bold mb-3 lh-sm"
+                                            style="color:#1a1a1a; transition: color 0.3s;"
+                                            onmouseover="this.style.color='#0A474C'"
+                                            onmouseout="this.style.color='#1a1a1a'">
+                                            {{ $blog->title }}
+                                        </h5>
+
+                                        {{-- Description --}}
+                                        <p class="text-secondary small lh-lg"
+                                            style="display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
+                                            {{ $blog->short_description }}
+                                        </p>
+                                    </a>
                                 </div>
                             </div>
 
-                            <!-- Date Badge -->
-                            <div class="flex items-center gap-2 mb-4">
-                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="text-sm text-gray-600">{{ \Carbon\Carbon::parse($blog->story_date)->format('F d, Y') }}</span>
+                            {{-- Right: Image --}}
+                            <div class="col-12 col-md-5 d-flex align-items-end justify-content-center p-4">
+                                <a href="{{ route('blog.single', $blog->slug) }}">
+                                    <img src="{{ Storage::url($blog->thumbnail_one) }}"
+                                        alt="{{ $blog->title }}"
+                                        class="rounded-3 shadow"
+                                        style="width:160px; height:210px; object-fit:cover; transition: transform 0.5s;"
+                                        onmouseover="this.style.transform='scale(1.05)'"
+                                        onmouseout="this.style.transform='scale(1)'">
+                                </a>
                             </div>
 
-                            <!-- Title -->
-                            <a href="{{ route('blog.single',$blog->slug) }}">
-                                <h3 class="text-xl lg:text-2xl font-bold text-gray-900 mb-4 leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                                    {{ \App\Helpers\TranslateHelper::translate($blog->title) }}
-                                </h3>
-
-                                <!-- Description -->
-                                <p class="text-gray-600 text-sm lg:text-base leading-relaxed mb-6 line-clamp-3 flex-grow">
-                                    {{ \App\Helpers\TranslateHelper::translate($blog->short_description) }}
-                                </p>
-                            </a>
                         </div>
-
-                        <!-- Right Side: Image Area -->
-                        <div class="relative w-full md:w-2/5 bg-gradient-to-br from-secondary to-secondary/50 rounded-bl-3xl md:rounded-bl-none md:rounded-tr-3xl md:rounded-br-3xl overflow-hidden min-h-[280px] md:min-h-0 flex items-end justify-center p-6">
-                            <!-- Red Accent Background (Behind Image) -->
-                            <div class="absolute top-0 left-0 w-32 h-32 bg-primary rounded-br-full"></div>
-
-                            <!-- Main Image -->
-                            <a href="{{ route('blog.single',$blog->slug) }}">
-                                <div class="relative z-20 w-48 h-48 lg:w-56 lg:h-[260px] mb-0">
-                                    <img src="{{Storage::url($blog->thumbnail_one)}}"
-                                        alt="{{ \App\Helpers\TranslateHelper::translate($blog->title) }}"
-                                        class="w-full h-full object-cover rounded-2xl shadow-2xl transition-transform duration-700 group-hover:scale-105" />
-                                </div>
-                            </a>
-
-                            <!-- Red Accent Background (Behind Image) -->
-                            <div class="absolute bottom-0 right-0 w-32 h-32 bg-primary rounded-tl-full"></div>
-                        </div>
-
                     </div>
                 </div>
                 @endforeach
             </div>
+
         </div>
     </section>
+
 </main>
-
-
-@section('js')
-<script>
-
-</script>
-@endsection
 
 @endsection

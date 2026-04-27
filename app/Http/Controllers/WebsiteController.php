@@ -61,12 +61,31 @@ class WebsiteController extends Controller
         return view('frontend.index', compact('galleries','steps','country','blogs','setting','slider','advanced','student','overview','services','stories','toprated','partners','frequently','photoreview','videoreview','certificates','notice'));
     }
 
+    public function alldestination()
+    {
+        $setting = Setting::first();
+        $overview = ProjectOverview::first();
+        $country = Country::where('status',1)->get();
+        return view('frontend.all-destination', compact('setting','overview','country'));
+    }
+
     public function allservices()
     {
         $setting = Setting::first();
         $overview = ProjectOverview::first();
         $services = MyChoose::where('status', 1)->orderBy('id', 'asc')->get();
         return view('frontend.services', compact('setting','overview','services'));
+    }
+
+    public function testimonial()
+    {
+        $setting = Setting::first();
+        $overview = ProjectOverview::first();
+        $stories = TopStudy::where('status',1)->orderBy('id', 'asc')->get()->map(function($s) {
+            $s->image_url = $s->image ? Storage::url($s->image) : '';
+            return $s;
+        })->values();
+        return view('frontend.testimonial', compact('setting','overview','stories'));
     }
 
     public function singleBlog($slug)
@@ -105,7 +124,8 @@ class WebsiteController extends Controller
         $overview = ProjectOverview::first();
         $mychoose = MyChoose::where('status',1)->get();
         $advanced = AdvancedStudy::first();
-        return view('frontend.who-we-are', compact('setting','overview','mychoose','advanced'));
+        $frequently = FrequentlyAsked::where('status',1)->get();
+        return view('frontend.who-we-are', compact('setting','overview','mychoose','advanced','frequently'));
     }
     
     public function notice()

@@ -80,7 +80,7 @@
             </li>
             @endcanany
 
-            {{--@canany(['create frequently','edit frequently','view frequently','delete frequently'])
+           @canany(['create frequently','edit frequently','view frequently','delete frequently'])
             <li class="{{ request()->routeIs('admin.frequently-asked.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.frequently-asked.index') }}" class="nva-link ms-4">
                     <i class="fa-solid fa-question-circle me-2"></i> FAQ
@@ -88,7 +88,7 @@
             </li>
             @endcanany
 
-            @canany(['create certificates','edit certificates','view certificates','delete certificates'])
+             {{--@canany(['create certificates','edit certificates','view certificates','delete certificates'])
             <li class="{{ request()->routeIs('admin.certificates.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.certificates.index') }}" class="nva-link ms-4">
                     <i class="fa-solid fa-certificate me-2"></i> Certificate
@@ -168,7 +168,7 @@
         'create career','edit career','view career','delete career',
         'create teams','edit teams','view teams','delete teams'
         ])
-        <li class="dropdown-btn">
+        {{--<li class="dropdown-btn">
             <span><i class="fa-solid fa-briefcase me-2"></i> Career</span>
             <i class="fa-solid fa-angle-down float-end mt-1"></i>
         </li>
@@ -204,7 +204,7 @@
 
 
 
-        </ul>
+        </ul>--}}
         @endcanany
 
         @canany([
@@ -238,7 +238,7 @@
         'create category-gallery','edit category-gallery','view category-gallery','delete category-gallery',
         'create gallery','edit gallery','view gallery','delete gallery'
         ])
-        <li class="dropdown-btn">
+        {{--<li class="dropdown-btn">
             <span>
                 <i class="fa-solid fa-images me-2"></i> Gallery
             </span>
@@ -261,18 +261,18 @@
                 </a>
             </li>
             @endcanany
-        </ul>
+        </ul>--}}
 
         @endcanany
 
         @canany(['create service-support','edit service-support','view service-support','delete service-support'])
-        <li class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
+        {{--<li class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
             <i class="fa-solid fa-headset"></i>
             <a class="text-decoration-none text-light ms-2"
                 href="{{ route('admin.services.index') }}">
                 Service & Support
             </a>
-        </li>
+        </li>--}}
         @endcanany
 
 
